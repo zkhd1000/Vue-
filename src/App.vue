@@ -1,17 +1,15 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <HelloWorld/>
+    <router-view></router-view>
+    <FooterGuide></FooterGuide>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld'
-
+import FooterGuide from './components/FooterGuide/FooterGuide';
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
+  components:{
+    FooterGuide
   }
 }
 </script>
