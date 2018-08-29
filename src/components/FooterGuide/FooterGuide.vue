@@ -37,7 +37,7 @@
     }
 </script>
 <style  lang="stylus" rel="stylesheet/stylus">
-  @import "../../common/styls/mixins.styl"
+  @import "../../common/stylus/mixins.styl"
 
   .footer_guide
     top-border-1px(#e4e4e4)

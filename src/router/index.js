@@ -8,6 +8,7 @@ import Msite from '../pages/Msite/Msite.vue'
 import Search from '../pages/Search/Search.vue'
 import Order from '../pages/Order/Order.vue'
 import Profile from '../pages/Profile/Profile.vue'
+import Login from '../pages/Login/login.vue'
 
 Vue.use(VueRouter)
 
@@ -19,7 +20,10 @@ export default new VueRouter({
     },
     {
       path: '/msite',
-      component: Msite
+      component: Msite,
+      meta:{
+        showFooter:true
+      }
     },
     {
       path: '/search',
@@ -32,6 +36,10 @@ export default new VueRouter({
     {
       path: '/profile',
       component: Profile
+    },
+    {
+        path: '/login',
+        component: Login
     }
   ]
 })
