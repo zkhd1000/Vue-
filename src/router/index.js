@@ -27,15 +27,24 @@ export default new VueRouter({
     },
     {
       path: '/search',
-      component: Search
+      component: Search,
+      meta:{
+        showFooter:true
+      }
     },
     {
       path: '/order',
-      component: Order
+      component: Order,
+      meta:{
+        showFooter:true
+      }
     },
     {
       path: '/profile',
-      component: Profile
+      component: Profile,
+      meta:{
+        showFooter:true
+      }
     },
     {
         path: '/login',

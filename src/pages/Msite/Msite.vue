@@ -10,112 +10,22 @@
     </HeaderTop>
 
     <nav class="msite_nav">
-      <div class="swiper-container">
+      <div class="swiper-container" v-if="categorys.length">
         <div class="swiper-wrapper">
-          <div class="swiper-slide">
-            <a href="javascript:;" class="link_to_food">
+          <div class="swiper-slide" v-for="(categorys, index) in categorysArr" :key="index">
+            <a href="javascript:;" class="link_to_food" v-for="(c, index) in categorys" :key="index">
               <div class="food_container">
-                <img src="./images/nav/1.jpg" alt="甜品饮品">
+                <img :src="baseImgUrl+c.image_url" alt="甜品饮品">
               </div>
-              <span>甜品饮品</span>
-            </a>
-            <a href="javascript:;" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/2.jpg" alt="甜品饮品">
-              </div>
-              <span>甜品饮品</span>
-            </a>
-            <a href="javascript:;" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/3.jpg" alt="甜品饮品">
-              </div>
-              <span>甜品饮品</span>
-            </a>
-            <a href="javascript:;" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/4.jpg" alt="甜品饮品">
-              </div>
-              <span>甜品饮品</span>
-            </a>
-            <a href="javascript:;" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/5.jpg" alt="甜品饮品">
-              </div>
-              <span>甜品饮品</span>
-            </a>
-            <a href="javascript:;" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/6.jpg" alt="甜品饮品">
-              </div>
-              <span>甜品饮品</span>
-            </a>
-            <a href="javascript:;" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/7.jpg" alt="甜品饮品">
-              </div>
-              <span>甜品饮品</span>
-            </a>
-            <a href="javascript:;" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/8.jpg" alt="甜品饮品">
-              </div>
-              <span>甜品饮品</span>
+              <span>{{c.title}}</span>
             </a>
           </div>
-           <div class="swiper-slide">
-            <a href="javascript:;" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/9.jpg" alt="甜品饮品">
-              </div>
-              <span>甜品饮品</span>
-            </a>
-            <a href="javascript:;" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/10.jpg" alt="甜品饮品">
-              </div>
-              <span>甜品饮品</span>
-            </a>
-            <a href="javascript:;" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/11.jpg" alt="甜品饮品">
-              </div>
-              <span>甜品饮品</span>
-            </a>
-            <a href="javascript:;" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/12.jpg" alt="甜品饮品">
-              </div>
-              <span>甜品饮品</span>
-            </a>
-            <a href="javascript:;" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/13.jpg" alt="甜品饮品">
-              </div>
-              <span>甜品饮品</span>
-            </a>
-            <a href="javascript:;" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/14.jpg" alt="甜品饮品">
-              </div>
-              <span>甜品饮品</span>
-            </a>
-            <a href="javascript:;" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/1.jpg" alt="甜品饮品">
-              </div>
-              <span>甜品饮品</span>
-            </a>
-            <a href="javascript:;" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/2.jpg" alt="甜品饮品">
-              </div>
-              <span>甜品饮品</span>
-            </a>
-          </div>
+         
         
         </div>
         <div class="swiper-pagination"></div>
       </div>
+      <img src="./images/msite_back.svg" alt="back" v-else>
     </nav>
 
     <div class="msite_shop_list">
@@ -129,24 +39,56 @@
     </section>
 </template>
 <script>
-    import Swiper from 'swiper'
+  import Swiper from 'swiper'
   import 'swiper/dist/css/swiper.min.css'
   import {mapState} from 'vuex';
   import ShopList from '../../components/ShopList/ShopList.vue'
     export default {
+      data(){
+        return{
+          baseImgUrl:'https://fuss10.elemecdn.com'
+        }
+      },
       mounted() {
-        new Swiper('.swiper-container',{
-          loop:true,
-          pagination:{
-            el:'.swiper-pagination'
-          }
-        })
+        
+        this.$store.dispatch('getCategorys'),
+        this.$store.dispatch('getShops')
       },
       components:{
         ShopList
       },
       computed:{
-        ...mapState(['address'])
+        ...mapState(['address','categorys']),
+        categorysArr(){
+          const {categorys} =this
+          const max = 8
+          const bigArray = []
+          let smallArr = []
+          categorys.forEach(c => {
+            if(smallArr.length===0){
+              bigArray.push(smallArr)
+            }
+            smallArr.push(c)
+
+            if(smallArr.length===max){
+              smallArr=[]
+            }
+          })
+          return bigArray
+        }
+
+      },
+      watch:{
+        categorys(){
+          this.$nextTick( () =>{
+                new Swiper('.swiper-container',{
+              loop:true,
+              pagination:{
+                el:'.swiper-pagination'
+              }
+            })
+          })
+        }
       }
     }
 </script>
